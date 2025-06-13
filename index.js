@@ -1,26 +1,32 @@
-// index.js
 const express = require('express');
-const app = express();
+const { db, initDB } = require('./db');
 
-// Middleware to parse JSON
+const app = express();
 app.use(express.json());
 
-// Sample GET API route
+initDB(); // initialize DB at start
+
+// GET route
 app.get('/api/hello', (req, res) => {
   res.json({ message: 'Hello from Express API!' });
 });
 
-// ✅ POST route
-app.post('/api/echo', (req, res) => {
-  const userInput = req.body;
+// ✅ POST route - save data to JSON
+app.post('/api/echo', async (req, res) => {
+  const userData = req.body;
+
+  await db.read(); // always read before writing
+  db.data.users.push(userData); // save to "users" array
+  await db.write(); // save changes
+
   res.json({
-    message: 'Data received successfully!',
-    data: userInput
+    message: 'Data saved to database!',
+    data: userData
   });
 });
 
 // Start server
 const PORT = 3000;
 app.listen(PORT, () => {
-  console.log(`✅ Server running on http://localhost:${PORT}`);
+  console.log(`✅ Server running at http://localhost:${PORT}`);
 });
