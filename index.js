@@ -12,6 +12,9 @@ app.use('/api/auth', authRoutes);
 const userRoutes = require('./routes/user'); // if placed separately
 app.use('/api', userRoutes);
 
+// Middleware to log requests
+const logRequest = require('./logs/logger');
+app.use(logRequest);
 
 // Protected route example
 app.get('/api/secret', authMiddleware, (req, res) => {
