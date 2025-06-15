@@ -1,31 +1,17 @@
 const express = require('express');
-const connectDB = require('./db');
-const User = require('./models/User');
-
+const mongoose = require('mongoose');
+const authMiddleware = require('./middlewares/authMiddleware');
 const app = express();
+
+mongoose.connect('mongodb+srv://apiuser:apiuser1234@apiuser.qjqer3z.mongodb.net/?retryWrites=true&w=majority&appName=apiuser').then(() => console.log('✅ DB Connected'));
+
 app.use(express.json());
+const authRoutes = require('./routes/auth');
+app.use('/api/auth', authRoutes);
 
-connectDB(); // connect to MongoDB Atlas
-
-// POST route
-app.post('/api/echo', async (req, res) => {
-  try {
-    const { name, email } = req.body;
-    const newUser = new User({ name, email });
-    await newUser.save();
-    res.status(201).json({ message: 'User saved!', user: newUser });
-  } catch (err) {
-    res.status(500).json({ error: 'Failed to save user' });
-  }
+// Protected route example
+app.get('/api/secret', authMiddleware, (req, res) => {
+  res.json({ message: `Hello user ${req.user.id}, this is protected data.` });
 });
 
-// GET all users
-app.get('/api/users', async (req, res) => {
-  const users = await User.find();
-  res.json(users);
-});
-
-const PORT = 3000;
-app.listen(PORT, () => {
-  console.log(`🚀 Server running at http://localhost:${PORT}`);
-});
+app.listen(3000, () => console.log('🚀 Server running on http://localhost:3000'));
