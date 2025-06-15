@@ -19,7 +19,7 @@ const userRoutes = require('./routes/user'); // if placed separately
 app.use('/api', userRoutes);
 
 // Middleware to log requests
-const logRequest = require('./logs/logger');
+const logRequest = require('./middlewares/logger');
 app.use(logRequest);
 
 // Protected route example

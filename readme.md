@@ -10,16 +10,19 @@ A simple RESTful API for user management built with Express.js and MongoDB. Feat
 ```
 express-api-example/
 ├── .env
+├── .gitignore
+├── assets/
+│   └── jwt_logo.jpg
 ├── cmd.txt
 ├── index.js
 ├── package.json
+├── package-lock.json
 ├── readme.md
 ├── logs/
-│   ├── logger.js
-│   └── logs/
-│       └── api-logs.json
+│   └── api-logs.json
 ├── middlewares/
-│   └── authMiddleware.js
+│   ├── authMiddleware.js
+│   └── logger.js
 ├── models/
 │   └── User.js
 ├── routes/
@@ -45,23 +48,9 @@ express-api-example/
 - `DELETE /api/users/:id` — Delete user by ID (protected)
 - `GET /api/secret` — Example protected route
 
-## Getting Started
-1. Clone the repo and install dependencies:
-   ```sh
-   npm install
-   ```
-2. Copy `.env` and update the values as needed:
-   ```env
-   MONGO_URI=your_mongodb_connection_string
-   JWT_SECRET=your_jwt_secret
-   PORT=3000
-   ```
-3. Start the server:
-   ```sh
-   node index.js
-   ```
-
 ---
+
+# Getting Started
 
 ## 1️⃣ Clone the Repository
 

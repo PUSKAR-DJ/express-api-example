@@ -4,7 +4,7 @@ const fs = require('fs');
 const os = require('os');
 const path = require('path');
 
-const logFilePath = path.join(__dirname, 'logs', 'api-logs.json');
+const logFilePath = path.join(__dirname, '../logs/api-logs.json');
 
 function logRequest(req, res, next) {
   const start = process.hrtime();
