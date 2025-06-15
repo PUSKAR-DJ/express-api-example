@@ -1,0 +1,15 @@
+mkdir express-api-example
+cd express-api-example
+npm init -y
+npm install express
+
+
+npm install mongoose
+
+npm install mongodb
+
+npm install jsonwebtoken bcryptjs
+
+npm install uuid
+
+npm install dotenv
