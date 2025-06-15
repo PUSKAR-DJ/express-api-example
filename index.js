@@ -1,32 +1,31 @@
 const express = require('express');
-const { db, initDB } = require('./db');
+const connectDB = require('./db');
+const User = require('./models/User');
 
 const app = express();
 app.use(express.json());
 
-initDB(); // initialize DB at start
+connectDB(); // connect to MongoDB Atlas
 
-// GET route
-app.get('/api/hello', (req, res) => {
-  res.json({ message: 'Hello from Express API!' });
-});
-
-// ✅ POST route - save data to JSON
+// POST route
 app.post('/api/echo', async (req, res) => {
-  const userData = req.body;
-
-  await db.read(); // always read before writing
-  db.data.users.push(userData); // save to "users" array
-  await db.write(); // save changes
-
-  res.json({
-    message: 'Data saved to database!',
-    data: userData
-  });
+  try {
+    const { name, email } = req.body;
+    const newUser = new User({ name, email });
+    await newUser.save();
+    res.status(201).json({ message: 'User saved!', user: newUser });
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to save user' });
+  }
 });
 
-// Start server
+// GET all users
+app.get('/api/users', async (req, res) => {
+  const users = await User.find();
+  res.json(users);
+});
+
 const PORT = 3000;
 app.listen(PORT, () => {
-  console.log(`✅ Server running at http://localhost:${PORT}`);
+  console.log(`🚀 Server running at http://localhost:${PORT}`);
 });
